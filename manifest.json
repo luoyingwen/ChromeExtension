@@ -1,0 +1,46 @@
+{
+   //Required
+   "name": "devloper proxy",
+   "version": "0.5",
+   "manifest_version": 2,
+   
+   // Recommended
+   "description": "developer online proxy",
+   "icons": {
+      "12": "icon.png",
+      "128": "icon.png",
+      "48": "icon.png"
+   },
+
+   // Pick one (or none)
+   "page_action": {
+      "default_icon": "icon.png",
+      "default_title": "developer proxy"
+   },
+   
+   // Add any of these that you need
+   "background": 
+   {
+      "scripts": ["OpenWithWebProxy.js"]
+   },
+   "content_scripts": 
+   [
+	   {
+	      "matches": ["https://webserverfordream.appspot.com/*"],
+	      "js": ["contentscript.js"],
+	      "run_at":"document_start"
+	   },
+	   {
+	      "matches": ["http://www.google.com/*", 
+		  "https://encrypted.google.com/*", 
+		  "http://www.google.com.hk/*", 
+		  "https://www.google.co.uk/*", 
+		  "https://www.google.fr/*",
+		  "https://www.google.de/*"
+		  ],
+	      "js": ["disableredirect.js"],
+	      "run_at":"document_end"
+	   }	   
+   ],
+   "permissions": [ "tabs", "contextMenus", "cookies","https://webserverfordream.appspot.com/*"]
+}
