@@ -21,24 +21,29 @@
    // Add any of these that you need
    "background": 
    {
-      "scripts": ["OpenWithWebProxy.js"]
+      "scripts": ["webproxymenu.js"]
    },
    "content_scripts": 
    [
 	   {
-	      "matches": ["https://webserverfordream.appspot.com/*"],
-	      "js": ["contentscript.js"],
+	      "matches": [
+		  "https://webserverfordream.appspot.com/*"
+		  ],
+		  
+	      "js": ["webproxysitescript.js"],
 	      "run_at":"document_start"
 	   },
 	   {
-	      "matches": ["http://www.google.com/*", 
+	      "matches": [
+		  "http://www.google.com/*", 
 		  "https://encrypted.google.com/*", 
 		  "http://www.google.com.hk/*", 
 		  "https://www.google.co.uk/*", 
 		  "https://www.google.fr/*",
 		  "https://www.google.de/*"
 		  ],
-	      "js": ["disableredirect.js"],
+		  
+	      "js": ["disablegoogleredirect.js"],
 	      "run_at":"document_end"
 	   }	   
    ],

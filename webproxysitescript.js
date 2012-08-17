@@ -12,8 +12,8 @@ function changeCookie()
 {
     var url = document.URL;
 
-    chrome.extension.sendRequest(url);
-    sleep(1000);
+    chrome.extension.sendRequest(url);//which commands?
+    sleep(1000);//why ?
 }
 
 changeCookie();
