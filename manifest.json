@@ -27,7 +27,7 @@
    [
 	   {
 	      "matches": [
-		  "https://webserverfordream.appspot.com/*"
+		  "https://hellocockroach.appspot.com/*"
 		  ],
 		  
 	      "js": ["webproxysitescript.js"],
@@ -47,5 +47,5 @@
 	      "run_at":"document_end"
 	   }	   
    ],
-   "permissions": [ "tabs", "contextMenus", "cookies","https://webserverfordream.appspot.com/*"]
+   "permissions": [ "tabs", "contextMenus", "cookies", "https://hellocockroach.appspot.com/*"]
 }

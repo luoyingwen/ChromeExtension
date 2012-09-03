@@ -1,6 +1,6 @@
 
 var protocalPrefix = "http://";
-var proxyUrl = "https://webserverfordream.appspot.com";
+var proxyUrl = "https://hellocockroach.appspot.com";
 
 function IsWebProxyUrl(url)
 {
@@ -14,7 +14,7 @@ function IsWebProxyUrl(url)
 
     return 0;
 }
-// Called when the url of a tab changes.
+
 function tabUrlChanged(tabId, changeInfo, tab) 
 {
     var validurl = tab.url;
@@ -56,9 +56,20 @@ function contextMenuClick(info, tab)
     chrome.tabs.create({url:valStr});
 }
 
+//get mirror domain
+//examples: 
+//1. https://hellocockroach.appspot.com/www.cnbeta.com/aaa.xxx => real_domain=www.cnbeta.com
+//2. https://hellocockroach.appspot.com/www.cnbeta.com/aaa.xxx => real_domain=www.cnbeta.com
+//3. https://hellocockroach.appspot.com/www.cnbeta.com/ => real_domain=www.cnbeta.com
+//4. https://hellocockroach.appspot.com/www.cnbeta.com => real_domain=www.cnbeta.com
+// skip process:
+// https://hellocockroach.appspot.com/www.bbb.com[:8080]/aaa.xxx
+//status: 1                          2                  0 =>break
+//range:                             rangeB             startPos
 function requestReached(url, sender, sendResponse)
 {
-    var status = 1;//1 domain range; 2 port range; 3 real domain;0 break
+    console.log("requestReached. url=" + url);
+    var status = 1;
 
     var prefix = "https://";
     var startPos = prefix.length;
@@ -66,62 +77,55 @@ function requestReached(url, sender, sendResponse)
     var domain = "";
     var real_domain = "";
 
-    while(status != 0 && startPos < url.length)
+    while(startPos < url.length)
     {
         if( status == 1)
         {
             if(url.charAt(startPos) == '/')
             {
                 domain = url.substr(rangeB, startPos - rangeB);
-                console.log("status = 3" + domain);
-                status = 3;
-                rangeB = startPos + 1;
-            }
-            else if(url.charAt(startPos) == ':')
-            {
-                domain = url.substr(rangeB, startPos - rangeB);
-                console.log("status = 2" + domain);
+                console.log("status = 1 :" + domain);
                 status = 2;
+                rangeB = startPos + 1;
             }
         }
         else if( status == 2)
         {
             if(url.charAt(startPos) == '/')
             {
-                status = 3;
-                rangeB = startPos + 1;
-            }
-        }
-        else if( status == 3)
-        {
-            if(url.charAt(startPos) == '/')
-            {
                 status = 0;
                 real_domain = url.substr(rangeB, startPos - rangeB);
-                console.log("status = 0" + real_domain);
+                console.log("status = 2 :" + real_domain);
+                break;
             }
         }
+        else
+        {
+            console.log("Never reach here.");
+            break;
+        }
         startPos++;
-        console.log(startPos);
     }
-    if(status == 3)
+    if(status == 2)
         real_domain = url.substr(rangeB, startPos - rangeB);
 
-    
     if(real_domain.indexOf(".") != -1)
     {
+        console.log("set cookie. real_domain:" + real_domain);
         chrome.cookies.set({"url":domain, "name":"real_domain", "value":real_domain});
     }
 }
-
-// Create one test item for each context type.
+  
+// Create context menu item for link.
 var title = "open with web proxy";
 var id = chrome.contextMenus.create({"title": title, "contexts":["link"], "onclick": contextMenuClick});
 
+//click handler from page action button of address bar
 chrome.pageAction.onClicked.addListener(webProxyIconClick);
-// Listen for any changes to the URL of any tab.
+// Listen for any changes to the URL of any tab. show or hide page action button
 chrome.tabs.onUpdated.addListener(tabUrlChanged);
 
-chrome.extension.onRequest.addListener(requestReached);
+// cookie set from changeCookie of content script 
+chrome.extension.onMessage.addListener(requestReached);
 
 
