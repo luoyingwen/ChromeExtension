@@ -35,6 +35,14 @@
 	   },
 	   {
 	      "matches": [
+		  "http://www.bjguahao.gov.cn/comm/beiyi3/*"
+		  ],
+		  
+	      "js": ["bjguahao.js"],
+	      "run_at":"document_idle"
+	   },
+	   {
+	      "matches": [
 		  "http://www.google.com/*", 
 		  "https://encrypted.google.com/*", 
 		  "http://www.google.com.hk/*", 
@@ -45,7 +53,8 @@
 		  
 	      "js": ["disablegoogleredirect.js"],
 	      "run_at":"document_end"
-	   }	   
+	   }
+
    ],
    "permissions": [ "tabs", "contextMenus", "cookies", "https://hellocockroach.appspot.com/*"]
 }
