@@ -5,7 +5,7 @@
 	if (isGuaHao){
 		console.log("In guahao.php page");
 		const TIMER_INTERVAL_MS = 100;
-		var timeridGetCode = setInterval(function(){
+        var submitFunc = function(){
 			var inputArray = document.getElementsByTagName("input");
 			for (var i = 0; i < inputArray.length; i++)
 			{
@@ -13,8 +13,7 @@
 				if ( oneInput.value === "点击获取" && oneInput.type === "button")
 				{
 					console.log("found target button");
-					clearInterval(timeridGetCode);
-					//oneInput.click();
+					oneInput.click();
 
 					var timeridSubmit = setInterval(function(){
 								var inputText = document.getElementById("dxcode1");
@@ -24,7 +23,7 @@
 									clearInterval(timeridSubmit);
 									var submitbtn = document.getElementById("button2");
 									console.log(submitbtn.value);
-									//submitbtn.click();
+									submitbtn.click();
 									console.log("submit form2");
 								}
 							  }, 
@@ -32,10 +31,9 @@
 					break;
 				}
 			}
-		},
-		TIMER_INTERVAL_MS);
+		};
+        submitFunc();
 	}
-
 })();
 
 
@@ -45,25 +43,26 @@
 	var isksyy = (fullURL.search("ksyy.php") > 0);
 	if (isksyy){
 		console.log("In ksyy.php");
-		const TIMER_INTERVAL_MS = 100;
-		var timeridBook = setInterval(function(){
-			var anchorArray = document.getElementsByTagName("a");
-			console.log(anchorArray.length);
-			var i = 0;
-			for (i = 0; i < anchorArray.length; i++){
-				var oneAnchor = anchorArray[i];
-				var trInnerText = oneAnchor.parentNode.parentNode.innerText.toString();
-				if (oneAnchor.text === "预约挂号" && trInnerText.search("颈椎") != -1 && trInnerText.search("14.00") != -1){
-					clearInterval(timeridBook);
-					console.log(trInnerText);
-					//oneAnchor.click();
-					break;
-				}
-			}
-			if ( i > 0 && i === anchorArray.length ){				
-				document.location.reload(true);
-			}		
-		},
-		TIMER_INTERVAL_MS);
+        var TARGET_DATE = "2012-12-11";
+        var isTargetDate = (fullURL.search(TARGET_DATE) > 0);
+        if (isTargetDate)
+        {
+            console.log("In Target Date page");
+            var bookFunc = function(){
+                var anchorArray = document.getElementsByTagName("a");
+                console.log(anchorArray.length);
+                for (var i = 0; i < anchorArray.length; i++){
+                    var oneAnchor = anchorArray[i];
+                    var trInnerText = oneAnchor.parentNode.parentNode.innerText.toString();
+                    if (oneAnchor.text === "预约挂号" && trInnerText.search("颈椎") != -1 && trInnerText.search("14.00") != -1){
+                        console.log(trInnerText);
+                        oneAnchor.click();
+                        break;
+                    }
+                }		
+            };
+            bookFunc();
+            setInterval(function(){document.location.reload(true);}, 500);
+        }
 	}
 })();
