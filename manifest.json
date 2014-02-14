@@ -1,11 +1,11 @@
 {
    //Required
-   "name": "devloper proxy",
+   "name": "Personal tools",
    "version": "0.5",
    "manifest_version": 2,
    
    // Recommended
-   "description": "developer online proxy",
+   "description": "Personal tools",
    "icons": {
       "12": "icon.png",
       "128": "icon.png",
@@ -15,13 +15,13 @@
    // Pick one (or none)
    "page_action": {
       "default_icon": "icon.png",
-      "default_title": "developer proxy"
+      "default_title": "Personal tools"
    },
    
    // Add any of these that you need
    "background": 
    {
-      "scripts": ["webproxymenu.js"]
+      "scripts": ["webproxymenu.js", "baiducidian.js"]
    },
    "content_scripts": 
    [
@@ -43,18 +43,13 @@
 	   },
 	   {
 	      "matches": [
-		  "http://www.google.com/*", 
-		  "https://encrypted.google.com/*", 
-		  "http://www.google.com.hk/*", 
-		  "https://www.google.co.uk/*", 
-		  "https://www.google.fr/*",
-		  "https://www.google.de/*"
+		  "*://www.google.com/*",
+		  "*://www.google.com.hk/*"
 		  ],
 		  
 	      "js": ["disablegoogleredirect.js"],
 	      "run_at":"document_end"
 	   }
-
    ],
    "permissions": [ "tabs", "contextMenus", "cookies", "https://hellocockroach.appspot.com/*"]
 }

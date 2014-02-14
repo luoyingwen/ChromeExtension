@@ -43,7 +43,7 @@
 	var isksyy = (fullURL.search("ksyy.php") > 0);
 	if (isksyy){
 		console.log("In ksyy.php");
-        var TARGET_DATE = "2012-12-11";
+        var TARGET_DATE = "2012-12-13";
         var isTargetDate = (fullURL.search(TARGET_DATE) > 0);
         if (isTargetDate)
         {
