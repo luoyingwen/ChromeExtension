@@ -10,28 +10,33 @@
 	}
 
 	function getwrapperurl(oriUrl) {
+		var getGoogleQueryWords = function (url) {
+			var parse_url = /^([A-Za-z]+):(\/{0,3})(www[.]google[.][^/]+)\/search.*[&?]q[=]([^&]+)/;				
+			var result = parse_url.exec(url);
+			if (result ) {
+				return result[4];
+			}
+			else {
+				return "";
+			}
+		}
 		var getUrlWithoutScheme = function () {
 			var parse_url = /^([A-Za-z]+):(\/{0,3})(.+)/;
 			var result = parse_url.exec(oriUrl);
 			return result[3];
 		}
+		var googleQueryWords = null;
 		if ( oriUrl.indexOf(proxyUrl) === -1) {
-			return proxyUrl + "/" + getUrlWithoutScheme();
+			googleQueryWords = getGoogleQueryWords(oriUrl);
+			if (googleQueryWords) {
+				googleQueryWords = googleQueryWords.replace("+", "%20");
+				return "http://www.baidu.com/#wd=" + googleQueryWords;
+			}
+			else {
+				return proxyUrl + "/" + getUrlWithoutScheme(oriUrl);
+			}
 		}
 		else {//start with proxyUrl
-			var realUrl = oriUrl.replace(proxyUrl, "");//remove proxyUrl at the beginning
-			realUrl = realUrl && realUrl.substr(1);//escape / with substr
-			if ( realUrl ) {
-				//now realUrl is similar to www.google.com.hk/url?q=https://www.hello-world.com/&sa=U&ei=f8H9UpzwB4a4qQHU-4DQAQ&ved=0CD0QFjAH&usg=AFQjCNGWubV5n2gG57mWqqJaWdUVFNBUZg
-				//we need to extract https://www.hello-world.com/
-				var parse_url = /^([0-9.\-A-Za-z]+)\/url[?]q=([^&]+)/;
-				var result = parse_url.exec(realUrl);
-				if (result[2]) {
-					console.log("found a search url. Value=" + result[2]);
-					return result[2];
-				}
-			}
-			
 			return oriUrl;
 		}		
 	}
