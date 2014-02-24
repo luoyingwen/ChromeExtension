@@ -21,8 +21,9 @@
    // Add any of these that you need
    "background": 
    {
-      "scripts": ["webproxymenu.js", "baiducidian.js"]
+      "scripts": ["webproxymenubackground.js", "baiducidianbackground.js", "guahaobackground.js"]
    },
+   "options_page": "popup.html",
    "content_scripts": 
    [
 	   {
@@ -35,10 +36,11 @@
 	   },
 	   {
 	      "matches": [
-		  "http://www.bjguahao.gov.cn/comm/beiyi3/*"
+		  "http://www.bjguahao.gov.cn/comm/*"
 		  ],
 		  
 	      "js": ["bjguahao.js"],
+		  "all_frames": true,
 	      "run_at":"document_idle"
 	   },
 	   {

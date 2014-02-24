@@ -20,9 +20,9 @@
 				return "";
 			}
 		}
-		var getUrlWithoutScheme = function () {
+		var getUrlWithoutScheme = function (url) {
 			var parse_url = /^([A-Za-z]+):(\/{0,3})(.+)/;
-			var result = parse_url.exec(oriUrl);
+			var result = parse_url.exec(url);
 			return result[3];
 		}
 		var googleQueryWords = null;

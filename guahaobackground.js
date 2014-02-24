@@ -1,4 +1,4 @@
-﻿(function () {
+(function () {
 	var curUrl = document.location.href.toString();
 	console.log(curUrl);
 	if (curUrl.search("content.php") !== -1) {
@@ -53,35 +53,6 @@
 	}
 	else if (curUrl.search("ghao.php") !== -1) {
 		console.log("found ghao.php");
-		if (document) {
-			(function () {
-			   var curUrl = document.location.href.toString();
-			   var allItem = document.getElementsByTagName("tr");
-			   var i;
-			   var hrefElement;
-			   var foundElement;
-			   for (i = 0; i < allItem.length; i++) {
-				   console.log(allItem[i].innerText);
-				   hrefElement = allItem[i].getElementsByTagName("a")[0];
-				   if (hrefElement) {
-					   console.log(hrefElement.href);
-					   foundElement = true;
-					   break;
-				   }
-			   }
-			   if (foundElement) {
-					//delete hrefElement.onclick;
-					hrefElement.click();
-			   }
-			   else {
-					document.location.reload();
-			   }
-			})();
-		}
-		else {
-			console.log("can not find document object");
-		}
-
 	}
 	else {
 		chrome.runtime.onMessage.addListener(
