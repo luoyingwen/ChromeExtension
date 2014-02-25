@@ -65,32 +65,64 @@
 				   hrefElement = allItem[i].getElementsByTagName("a")[0];
 				   if (hrefElement) {
 					   console.log(hrefElement.href);
-					   foundElement = true;
-					   break;
+					   //foundElement = true;
+					   //break;
 				   }
 			   }
 			   if (foundElement) {
-					//delete hrefElement.onclick;
 					hrefElement.click();
 			   }
 			   else {
-					document.location.reload();
+					//document.location.reload();
 			   }
 			})();
 		}
 		else {
 			console.log("can not find document object");
 		}
-
 	}
-	else {
+	else if (curUrl.search("guahao.php") !== -1) {
+        console.log("found guahao.php");
+        var getEleByTagNameAndOnclickSig = function (tagName, signature) {
+            var funcCode;
+            var allItem = document.getElementsByTagName(tagName);
+            var i;
+			var valueContent;
+			var srcContent;
+            for (i = 0; i < allItem.length; i++) {
+                funcCode = allItem[i].onclick;
+				valueContent = allItem[i].value;
+				srcContent = allItem[i].src;
+                if (
+				(valueContent && valueContent.toString().search(signature) !== -1) ||
+				(srcContent && srcContent.toString().search(signature) !== -1)
+				) {
+                    console.log("found Element");
+                    return allItem[i];
+                }
+            }
+            return null;
+        };
+        var getCodeEle = getEleByTagNameAndOnclickSig("input", "点击获取");
+        if (getCodeEle) {
+			console.log("call getcode.");
+            getCodeEle.click();
+        }
 		chrome.runtime.onMessage.addListener(
 			function(request, sender, sendResponse) {
-			console.log(sender.tab ?
-					"from a content script:" + sender.tab.url :
-					"from the extension");
-			console.log("verifycode=" + request.verifycode);
+				console.log("verifycode=" + request.verifycode);
+				document.getElementById("dxcode1").value = request.verifycode + "hello";
+		
+				var submitEle =  getEleByTagNameAndOnclickSig("img", "queren");
+				var dxCode = document.getElementById("dxcode1").value;
+				if (submitEle && dxCode && dxCode.toString().length > 0) {
+					console.log("click submit button.");
+					submitEle.click();
+				}
 			}
 		);
+    }
+	else {
+		console.log("do nothing.");
 	}
 })();
