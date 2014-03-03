@@ -1,70 +1,66 @@
-( function () {
-	const TIMER_INTERVAL = 2000;//ms, too long maybe not handle before user click. 
-								//too small maybe content not ready between content change and document ready
-	const MAX_CALLBACK_COUNT = 10;//call callback max count. if not stop, will comsume cpu and reduce computer performance
+﻿/*global window, console, document, chrome*/
+(function () {
+    var TIMER_INTERVAL, MAX_CALLBACK_COUNT, timerid, timecallbackcount, process, contentchanged, timercallback;
 
-	var timerid = 0;
-	var timecallbackcount = 0;
+    TIMER_INTERVAL = 2000;//ms, too long maybe not handle before user click.
+                                //too small maybe content not ready between content change and document ready
+    MAX_CALLBACK_COUNT = 10;//call callback max count. if not stop, will comsume cpu and reduce computer performance
 
-	var process = function () {
-		//console.log("disableredirect process");
-		var len = document.links.length;
-		for (var i=0; i < len; i++) {
-			var l = document.links[i];
+    timerid = 0;
+    timecallbackcount = 0;
 
-			//Remove click tracking 
-			if (l.hasAttribute("onmousedown"))
-			{
-				  var value = l.getAttribute("onmousedown");
-				  
-				  if(value.indexOf("return") != -1)
-				  {
-					 l.removeAttribute("onmousedown");
-				  }
-			}
+    process = function () {
+        //console.log("disableredirect process");
+        var len, i, l, value;
+        len = document.links.length;
+        for (i = 0; i < len; i += 1) {
+            l = document.links[i];
 
-			// Add tooltip to each link
-			if (!l.hasAttribute("title"))
-				l.setAttribute("title", l.href);
-		}
-	}
+            //Remove click tracking
+            if (l.hasAttribute("onmousedown")) {
+                value = l.getAttribute("onmousedown");
 
-	var contentchanged = function () {
-		//console.log("contentchanged");
-		if (timerid != 0)
-		{
-			clearInterval(timerid);
-			timecallbackcount = 0;
-			timerid = 0;
-		}
-		timerid = setInterval(function(){timercallback()}, TIMER_INTERVAL);
-		//console.log(timerid);
-		process();
-	}
+                if (value.indexOf("return") !== -1) {
+                    l.removeAttribute("onmousedown");
+                }
+            }
 
-	var timercallback = function () {
-		//console.log("timercallback");
-		if ( timecallbackcount > MAX_CALLBACK_COUNT)
-		{
-			clearInterval(timerid);
-			timecallbackcount = 0;
-			timerid = 0;
-		}
-		else
-		{
-			timecallbackcount++;
-		}
-		process();
-	}
+            // Add tooltip to each link
+            if (!l.hasAttribute("title")) {
+                l.setAttribute("title", l.href);
+            }
+        }
+    };
+    timercallback = function () {
+        //console.log("timercallback");
+        if (timecallbackcount > MAX_CALLBACK_COUNT) {
+            window.clearInterval(timerid);
+            timecallbackcount = 0;
+            timerid = 0;
+        } else {
+            timecallbackcount += 1;
+        }
+        process();
+    };
 
-	if(window.addEventListener ) 
-	{
-		console.log("window.addEventListener ");
-		window.addEventListener( 'hashchange', contentchanged, false );
-	}
-	else if ( window.attachEvent ) {
-		console.log("window.attachEvent ");
-		window.attachEvent( 'onhashchange', contentchanged );
-	}
-	contentchanged();
-})();
+    contentchanged = function () {
+        //console.log("contentchanged");
+        if (timerid !== 0) {
+            window.clearInterval(timerid);
+            timecallbackcount = 0;
+            timerid = 0;
+        }
+        timerid = window.setInterval(function () { timercallback(); }, TIMER_INTERVAL);
+        //console.log(timerid);
+        process();
+    };
+
+    if (window.addEventListener) {
+        console.log("window.addEventListener ");
+        window.addEventListener('hashchange', contentchanged, false);
+    } else if (window.attachEvent) {
+        console.log("window.attachEvent");
+        window.attachEvent('onhashchange', contentchanged);
+    }
+    contentchanged();
+}());
