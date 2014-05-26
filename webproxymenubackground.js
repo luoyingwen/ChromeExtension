@@ -1,12 +1,31 @@
 /*global window, console, document, chrome*/
 (function () {
-    var proxyUrl, tabUrlChanged, getwrapperurl, webProxyIconClick, contextMenuClick, requestReached, title;
+    var proxyUrl, tabUrlCreated, tabUrlChanged, getwrapperurl, webProxyIconClick, contextMenuClick, requestReached, title;
     proxyUrl = "https://hellocockroach.appspot.com";
 
+    tabUrlCreated = function (tab) {
+    };
+
     tabUrlChanged = function (tabId, changeInfo, tab) {
+        var extractRealUrl, extractFromSearch;
+        extractFromSearch = function (url) {
+            var parseSearch, result;
+            parseSearch = /^([A-Za-z]+):(\/{0,3})(www[.]google[.a-z]+)\/url[?][a-zA-Z0-9&=]+url=([^&]+)/;
+            result = parseSearch.exec(url);
+            if (result) {
+                return decodeURIComponent(result[4]);
+            }
+            return "";
+        };
         if (tab.url && tab.url.indexOf(proxyUrl) === -1) {
             chrome.pageAction.show(tabId);
+            extractRealUrl = extractFromSearch(tab.url);
+            if (extractRealUrl) {
+                console.log("original url is from search engine, real url is " + extractRealUrl);
+                chrome.tabs.update(tabId, {"url": extractRealUrl, "selected": true});
+            }
         }
+
     };
 
     getwrapperurl = function (oriUrl) {
@@ -71,6 +90,7 @@
     chrome.pageAction.onClicked.addListener(webProxyIconClick);
     // Listen for any changes to the URL of any tab. show or hide page action button
     chrome.tabs.onUpdated.addListener(tabUrlChanged);
+    chrome.tabs.onCreated.addListener(tabUrlCreated);
 
     // cookie set from changeCookie of content script
     chrome.extension.onMessage.addListener(requestReached);

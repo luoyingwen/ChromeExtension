@@ -23,7 +23,7 @@
                     requestUrl();
                 } else {
                     console.log("device is not available.");
-                    window.setTimeout(requestUrl, 5000);
+                    //window.setTimeout(requestUrl, 5000);//disable it currently
                 }
             }
         };
