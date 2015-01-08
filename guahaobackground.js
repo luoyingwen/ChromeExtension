@@ -1,4 +1,4 @@
-﻿/*global window, console, document, chrome*/
+/*global window, console, document, chrome*/
 (function () {
     var requestUrl = function () {
         var deviceIp, devicePort, xmlhttp;

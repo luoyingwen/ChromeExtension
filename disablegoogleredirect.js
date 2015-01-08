@@ -1,4 +1,4 @@
-﻿/*global window, console, document, chrome*/
+/*global window, console, document, chrome*/
 (function () {
     var TIMER_INTERVAL, MAX_CALLBACK_COUNT, timerid, timecallbackcount, process, contentchanged, timercallback;
 

@@ -1,4 +1,4 @@
-﻿/*global window, console, document, chrome*/
+/*global window, console, document, chrome*/
 (function () {
     var deviceMgr = (function () {
         var smsDeviceIpKey, smsDevicePortKey;
@@ -35,9 +35,9 @@
                         if (xmlhttp.status === 200) {
                             deviceMgr.setIp(testIp);
                             deviceMgr.setPort(testPort);
-                            document.getElementById("show_status").innerText = "update device info successfully.";
+                            document.getElementById("show_status").innerText = "update device info successfully."+ xmlhttp.responseText;
                         } else {
-                            document.getElementById("show_status").innerText = "device is not available.";
+                            document.getElementById("show_status").innerText = "device is not available. status=" + xmlhttp.status + "response=" + xmlhttp.responseText;
                         }
                     }
                 };

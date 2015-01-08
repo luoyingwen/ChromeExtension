@@ -1,10 +1,8 @@
 {
-   //Required
    "name": "Personal tools",
    "version": "0.5",
    "manifest_version": 2,
-   
-   // Recommended
+
    "description": "Personal tools",
    "icons": {
       "12": "icon.png",
@@ -12,25 +10,23 @@
       "48": "icon.png"
    },
 
-   // Pick one (or none)
    "page_action": {
       "default_icon": "icon.png",
       "default_title": "Personal tools"
    },
-   
-   // Add any of these that you need
-   "background": 
+
+   "background":
    {
       "scripts": ["webproxymenubackground.js", "baiducidianbackground.js", "guahaobackground.js"]
    },
    "options_page": "popup.html",
-   "content_scripts": 
+   "content_scripts":
    [
 	   {
 	      "matches": [
 		  "https://hellocockroach.appspot.com/*"
 		  ],
-		  
+
 	      "js": ["webproxysitescript.js"],
 	      "run_at":"document_start"
 	   },
@@ -38,7 +34,7 @@
 	      "matches": [
 		  "http://www.bjguahao.gov.cn/comm/*"
 		  ],
-		  
+
 	      "js": ["bjguahao.js"],
 		  "all_frames": true,
 	      "run_at":"document_idle"
@@ -48,7 +44,7 @@
 		  "*://www.google.com/*",
 		  "*://www.google.com.hk/*"
 		  ],
-		  
+
 	      "js": ["disablegoogleredirect.js"],
 	      "run_at":"document_end"
 	   }

@@ -4,6 +4,7 @@
     proxyUrl = "https://hellocockroach.appspot.com";
 
     tabUrlCreated = function (tab) {
+        console.log("onCreated event. url=" + tab.url);
     };
 
     tabUrlChanged = function (tabId, changeInfo, tab) {
