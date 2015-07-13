@@ -17,19 +17,11 @@
 
    "background":
    {
-      "scripts": ["webproxymenubackground.js", "baiducidianbackground.js", "guahaobackground.js"]
+      "scripts": ["dictionarybackground.js", "guahaobackground.js", "iqiyibackground.js"]
    },
    "options_page": "popup.html",
    "content_scripts":
    [
-	   {
-	      "matches": [
-		  "https://hellocockroach.appspot.com/*"
-		  ],
-
-	      "js": ["webproxysitescript.js"],
-	      "run_at":"document_start"
-	   },
 	   {
 	      "matches": [
 		  "http://www.bjguahao.gov.cn/comm/*"
@@ -39,7 +31,16 @@
 		  "all_frames": true,
 	      "run_at":"document_idle"
 	   },
-	   {
+       {
+	      "matches": [
+		  "http://www.iqiyi.com/*"
+		  ],
+
+	      "js": ["proxyiqiyi.js"],
+		  "all_frames": true,
+	      "run_at":"document_end"
+	   },
+ 	   {
 	      "matches": [
 		  "*://www.google.com/*",
 		  "*://www.google.com.hk/*"
@@ -49,5 +50,8 @@
 	      "run_at":"document_end"
 	   }
    ],
-   "permissions": [ "tabs", "contextMenus", "cookies", "https://hellocockroach.appspot.com/*"]
+   "web_accessible_resources": [
+    "iqiyi.js*"
+   ],
+   "permissions": [ "tabs", "contextMenus", "cookies"]
 }
